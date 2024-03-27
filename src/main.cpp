@@ -8,7 +8,7 @@ const char* ssid     = "XXXXXXXX"; // WiFi SSID
 const char* password = "XXXXXXXX"; // WiFi Password
 
 // deployed on GoogleAppsScript
-const char* gas_api  = "https://script.google.com/a/macros/ifdl.jp/s/AKf...yqg/exec";
+const char* gas_api  = "https://script.google.com/macros/s/AKf...yqg/exec";
 
 // JSON
 // https://qiita.com/poruruba/items/4bf6a52520e431a8f4a5
@@ -20,24 +20,32 @@ StaticJsonDocument<200> json_doc;
 boolean GAS_post(String msg) {
   WiFiClientSecure client;
   client.setInsecure();
-  if(!client.connect(gas_api, 443)) {
-    printf("connect error!\n");
+  if(!client.connect("script.google.com", 443)) {
+    M5.Display.printf("connect error!\n");
     return false;
   }
-
   String json_request;
   json_doc["message"] = msg;
 
   serializeJson(json_doc, json_request);
-  printf("JSON string: %s\n", json_request.c_str());
+  // M5.Display.printf("JSON string: %s\n", json_request.c_str()); // for debug
 
   String request = String("")
-              + "POST /api/notify HTTP/1.1\r\n"
-              + "Host: " + gas_api + "\r\n"
-              + "Content-Length: " + String(sizeof(json_request)) +  "\r\n"
-              + "Content-Type: application/x-www-form-urlencoded\r\n\r\n"
+              + "POST " + String(gas_api) + " HTTP/1.1\r\n"
+              + "Host: script.google.com\r\n"
+              + "Content-type: application/json\r\n"
+              + "Content-Length: " + String(json_request.length()) + "\r\n"
+              + "Connection: close\r\n\r\n"
               + String(json_request) + "\r\n";
+  printf("request: %s\n", request.c_str());
   client.print(request);
+
+  while (client.connected()) {
+    String line = client.readStringUntil('\n');
+    printf("%s\n", line.c_str());
+  }
+  client.stop();
+
   return true;
 }
 
@@ -58,6 +66,8 @@ void setup() {
 void loop() {
   M5.update();
   if(M5.BtnA.wasPressed()) {
+    M5.Display.printf("Button A Pressed\n");
+    printf("Button A Pressed\n");
     String msg = "Button A Pressed";
     GAS_post(msg);
   }
