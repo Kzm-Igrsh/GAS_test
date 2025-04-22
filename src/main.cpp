@@ -3,6 +3,7 @@
 #include <ArduinoJson.h>
 
 // ref: https://sample.msr-r.net/m5stack-line-notify/
+//fja;lfjasdgjeoaasdkjfasdjsdfj;//
 
 const char* ssid     = "ifdl"; // WiFi SSID
 const char* password = "hogeupip5"; // WiFi Password
