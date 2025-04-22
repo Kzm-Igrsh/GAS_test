@@ -4,11 +4,11 @@
 
 // ref: https://sample.msr-r.net/m5stack-line-notify/
 
-const char* ssid     = "XXXXXXXX"; // WiFi SSID
-const char* password = "XXXXXXXX"; // WiFi Password
+const char* ssid     = "ifdl"; // WiFi SSID
+const char* password = "hogeupip5"; // WiFi Password
 
 // deployed on GoogleAppsScript
-const char* gas_api  = "https://script.google.com/macros/s/AKf...yqg/exec";
+const char* gas_api  = "https://script.google.com/macros/s/AKfycbyXkDVUDI2yw_BcLHasZrMRZl_6FCq5LhpbIS-VqetE7o2YOaa0HWW1hkoeIW7TvOJ5ew/exec";
 
 // JSON
 // https://qiita.com/poruruba/items/4bf6a52520e431a8f4a5
